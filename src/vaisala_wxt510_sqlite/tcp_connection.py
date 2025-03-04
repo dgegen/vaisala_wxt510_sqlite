@@ -41,6 +41,9 @@ class TCPConnection:
 
             if "air_pressure" in parsed_data:
                 self.db.insert_environmental_data(parsed_data)
+                
+            if "rain" in parsed_data or "hail" in parsed_data:
+                self.db.insert_rain_hail_data(parsed_data)
 
             time.sleep(0.5)
 

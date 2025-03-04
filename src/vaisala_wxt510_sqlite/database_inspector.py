@@ -1,7 +1,8 @@
 import sqlite3
-import pandas as pd
 from datetime import datetime, timedelta
+from typing import Tuple
 
+import pandas as pd
 from vaisala_wxt510.config import Config
 
 CONFIG = Config.from_yaml()
@@ -13,11 +14,14 @@ class DatabaseInspector:
         self._conn = sqlite3.connect(self.db_path)
         self._cursor = self._conn.cursor()
 
-    def fetch_all_data(self) -> tuple:
+    def fetch_all_data(
+        self,
+    ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         heating_data = self.fetch_all_heating_data()
         wind_data = self.fetch_all_wind_data()
         environmental_data = self.fetch_all_environmental_data()
-        return heating_data, wind_data, environmental_data
+        rain_hail_data = self.fetch_all_rain_hail_data_data()
+        return heating_data, wind_data, rain_hail_data, environmental_data
 
     def fetch_all_heating_data(self) -> pd.DataFrame:
         df = pd.read_sql_query("SELECT * FROM heating_data", self._conn)
@@ -31,7 +35,11 @@ class DatabaseInspector:
         df = pd.read_sql_query("SELECT * FROM environmental_data", self._conn)
         return df
 
-    def fetch_recent_data(self, table_name, hours) -> pd.DataFrame:
+    def fetch_all_rain_hail_data_data(self) -> pd.DataFrame:
+        df = pd.read_sql_query("SELECT * FROM environmental_data", self._conn)
+        return df
+
+    def fetch_recent_data(self, table_name: str, hours: float) -> pd.DataFrame:
         time_threshold = datetime.now() - timedelta(hours=hours)
         df = pd.read_sql_query(
             f"""
@@ -51,6 +59,9 @@ class DatabaseInspector:
 
     def fetch_recent_environmental_data(self, hours) -> pd.DataFrame:
         return self.fetch_recent_data("environmental_data", hours)
+
+    def fetch_recent_rain_hail_data(self, hours) -> pd.DataFrame:
+        return self.fetch_recent_data("rain_hail_data", hours)
 
     def close(self):
         self._conn.close()
