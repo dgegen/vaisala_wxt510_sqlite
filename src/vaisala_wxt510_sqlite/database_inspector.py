@@ -9,10 +9,28 @@ CONFIG = Config.from_yaml()
 
 
 class DatabaseInspector:
+    """ A context manager for inspecting the database.
+    
+    Examples
+    --------
+    >>> with DatabaseInspector() as inspector:
+    >>>     heating_data, wind_data, rain_hail_data, environmental_data = inspector.fetch_all_data()
+    >>> print(heating_data)
+    >>> print(wind_data)
+    >>> print(environmental_data)
+    """
+    
     def __init__(self):
         self.db_path = CONFIG.db_path
+
+    def __enter__(self):
         self._conn = sqlite3.connect(self.db_path)
         self._cursor = self._conn.cursor()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self._conn:
+            self._conn.close()
 
     def fetch_all_data(
         self,
@@ -63,5 +81,3 @@ class DatabaseInspector:
     def fetch_recent_rain_hail_data(self, hours) -> pd.DataFrame:
         return self.fetch_recent_data("rain_hail_data", hours)
 
-    def close(self):
-        self._conn.close()

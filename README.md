@@ -32,7 +32,17 @@ The first time you run this, you will be prompted to provide the path of the SQL
 To inspect the data stored in the SQLite database, run:
 
 ```sh
-python inspect_database.py
+from vaisala_wxt510_sqlite import DatabaseInspector
+
+with DatabaseInspector() as inspector:
+    heating_data_df, wind_data_df, rain_hail_data_df, environmental_data_df = (
+        inspector.fetch_all_data()
+    )
+
+print(heating_data_df)
+print(wind_data_df)
+print(rain_hail_data_df)
+print(environmental_data_df)
 ```
 
 
