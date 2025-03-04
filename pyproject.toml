@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vaisala_wxt510_sqlite"
+authors = [
+    {name = "David Degen", email = "ddegen@ethz.ch"},
+]
+readme = "README.md"
+requires-python = ">=3.11.0"
+keywords = ["Vaisala", "Weather Transmitter", "WXT510"]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "pandas",
+    "PyYAML",
+]
+version = '0.0.1'
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = ["ruff", "pytest"]
