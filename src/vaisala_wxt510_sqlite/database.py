@@ -55,6 +55,7 @@ class Database:
             hail_intensity REAL,
             hail_peak_intensity REAL,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
         """)
 
         self.conn.commit()

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import pandas as pd
-from vaisala_wxt510.config import Config
+from vaisala_wxt510_sqlite.config import Config
 
 CONFIG = Config.from_yaml()
 
