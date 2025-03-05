@@ -7,7 +7,7 @@ This project provides tools for interacting with a Vaisala WXT510 weather statio
 
 1. Clone the repository:
     ```sh
-    git clone git@github.com:dgegen/vaisala_wxt510_sqlite.git
+    git clone https://github.com/dgegen/vaisala_wxt510_sqlite.git
     cd vaisala_wxt510_sqlite
     ```
 
